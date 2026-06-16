@@ -19,68 +19,114 @@
 #' estimate_hourly_temp(t_min = 12, t_max = 25, t_min_next = 13, lat = -27.28, doy = 150)
 estimate_hourly_temp <- function(t_min, t_max, t_min_next, lat, doy,
                                  alpha = 2.75, beta = 1.40, gamma = 2.75) {
-  # Input validation
   inputs <- list(t_min, t_max, t_min_next, lat, doy, alpha, beta, gamma)
   if (any(purrr::map_lgl(inputs, ~ !is.numeric(.x) || length(.x) != 1))) {
     rlang::abort("All inputs must be single numeric values.")
   }
 
-  # 1. Astronomical Calculations (Sunrise and Sunset hours)
-  # Declination of the sun (radians)
   dec <- 0.409 * sin((2 * pi * doy / 365) - 1.39)
   lat_rad <- lat * pi / 180
 
-  # Sunset hour angle (radians)
   ws_arg <- -tan(lat_rad) * tan(dec)
-  ws_arg <- max(-1, min(1, ws_arg)) # Bound for polar regions
+  ws_arg <- max(-1, min(1, ws_arg))
   ws <- acos(ws_arg)
 
-  # Daylength (hours) and standard sunrise/sunset times (solar time approximation)
   dl <- (24 / pi) * ws
   sunrise <- 12 - (dl / 2)
   sunset <- 12 + (dl / 2)
 
-  # Time variables alignment based on model specifications
-  t_n <- sunrise + beta   # Time of minimum temperature
-  t_x <- 12 + alpha       # Time of maximum temperature
+  t_n <- sunrise + beta
+  t_x <- 12 + alpha
 
-  # Reconstruct hourly values (hours 0 to 23)
   hours <- 0:23
   t_hourly <- purrr::map_dbl(hours, function(t) {
-
-    # Condition A: Between minimum temperature time and sunset (Daytime Sine Model)
     if (t >= t_n && t <= sunset) {
       term <- (t - t_n) / (dl - beta + alpha)
       temp <- t_min + (t_max - t_min) * sin((pi / 2) * term)
       return(temp)
     }
-
-    # Condition B: Nighttime Exponential Decay Model
-    # Part 1: Before minimum temperature time (early morning hours belonging to previous night cycle)
     if (t < t_n) {
-      # Use an offset of 24 hours to look back at the decay starting from the day before
       t_adj <- t + 24
       t_s_prev <- sunset
-
-      # Calculate temperature at sunset
       term_s <- (sunset - t_n) / (dl - beta + alpha)
       t_sunset <- t_min + (t_max - t_min) * sin((pi / 2) * term_s)
-
-      # Exponential decay using current t_min as the target base minimum
       temp <- t_min + (t_sunset - t_min) * exp(-gamma * (t_adj - t_s_prev) / (24 - dl + beta))
       return(temp)
     }
-
-    # Part 2: After sunset until midnight
     if (t > sunset) {
       term_s <- (sunset - t_n) / (dl - beta + alpha)
       t_sunset <- t_min + (t_max - t_min) * sin((pi / 2) * term_s)
-
-      # Exponential decay targeting next day's minimum temperature
       temp <- t_min_next + (t_sunset - t_min_next) * exp(-gamma * (t - sunset) / (24 - dl + beta))
       return(temp)
     }
   })
 
   return(t_hourly)
+}
+
+#' @title Expand Daily Temperature Data Frame to Hourly Scale
+#' @description Takes a data frame containing daily records (minimum and maximum
+#' temperatures) and expands it into an hourly data frame (24 rows per day)
+#' using a sine-exponential reconstruction model. The Day of the Year (DOY) is
+#' calculated automatically from the date column.
+#'
+#' @param data A data frame containing the daily weather records.
+#' @param date_col Unquoted name of the column containing the Date object.
+#' @param t_min_col Unquoted name of the column containing the current day's minimum temperature (°C).
+#' @param t_max_col Unquoted name of the column containing the current day's maximum temperature (°C).
+#' @param lat_col Unquoted name of the column containing the latitude (decimal degrees).
+#'
+#' @return A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
+#' with two new columns: \code{hour} (0 to 23) and \code{temperature_hourly} (°C). Original input
+#' columns are preserved.
+#' @export
+#'
+#' @examples
+#' library(dplyr)
+#'
+#' # Sample daily dataset matching your exact input structure
+#' daily_series <- tibble::tibble(
+#'   date = as.Date("2026-06-01") + 0:4,
+#'   lat = rep(-27.3, 5),
+#'   tmin = c(12.0, 13.5, 11.0, 10.5, 14.0),
+#'   tmax = c(22.0, 24.5, 21.0, 19.5, 23.0)
+#' )
+#'
+#' daily_to_hourly_temp(daily_series, date, tmin, tmax, lat)
+daily_to_hourly_temp <- function(data, date_col, t_min_col, t_max_col, lat_col) {
+  if (!is.data.frame(data)) {
+    rlang::abort("Input 'data' must be a data frame.")
+  }
+
+  date_sym  <- rlang::ensym(date_col)
+  t_min_sym <- rlang::ensym(t_min_col)
+  t_max_sym <- rlang::ensym(t_max_col)
+  lat_sym   <- rlang::ensym(lat_col)
+
+  cols_to_check <- c(as.character(date_sym), as.character(t_min_sym),
+                     as.character(t_max_sym), as.character(lat_sym))
+  if (!all(cols_to_check %in% colnames(data))) {
+    rlang::abort("One or more specified columns do not exist in the provided data frame.")
+  }
+
+  expanded_data <- data |>
+    dplyr::mutate(doy_internal = as.numeric(format(!!date_sym, "%j"))) |>
+    dplyr::mutate(t_min_next_temp_internal = dplyr::lead(!!t_min_sym)) |>
+    dplyr::mutate(t_min_next_temp_internal = dplyr::coalesce(.data$t_min_next_temp_internal, !!t_min_sym)) |>
+    dplyr::mutate(temperature_hourly = purrr::pmap(
+      list(!!t_min_sym, !!t_max_sym, .data$t_min_next_temp_internal, !!lat_sym, .data$doy_internal),
+      function(t_min, t_max, t_min_next, lat, doy) {
+        # FIX: Replaced vctrs::field with pure NA_real_ padding to avoid corrupt rcrd errors
+        if (is.na(t_min) || is.na(t_max) || is.na(lat) || is.na(doy)) {
+          return(rep(NA_real_, 24))
+        }
+        estimate_hourly_temp(t_min, t_max, t_min_next, lat, doy)
+      }
+    )) |>
+    dplyr::select(-"t_min_next_temp_internal", -"doy_internal") |>
+    dplyr::mutate(hour = purrr::map(.data$temperature_hourly, ~ 0:23)) |>
+    tidyr::unnest(cols = c("temperature_hourly", "hour")) |>
+    dplyr::relocate("hour", "temperature_hourly", .after = !!lat_sym)
+
+  return(expanded_data)
 }
