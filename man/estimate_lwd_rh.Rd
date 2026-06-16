@@ -18,7 +18,8 @@ values: 1 (wet) or 0 (dry).
 }
 \description{
 Estimates the number of hours of leaf wetness based on a Relative
-Humidity (RH) threshold.
+Humidity (RH) threshold. This is a standard empirical approach used in
+agricultural meteorology to predict plant disease risks.
 }
 \examples{
 hourly_rh <- c(85, 88, 91, 95, 92, 87, 80)
