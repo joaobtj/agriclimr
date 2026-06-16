@@ -67,8 +67,8 @@ estimate_hourly_temp <- function(t_min, t_max, t_min_next, lat, doy,
 #' @title Expand Daily Temperature Data Frame to Hourly Scale
 #' @description Takes a data frame containing daily records (minimum and maximum
 #' temperatures) and expands it into an hourly data frame (24 rows per day)
-#' using a sine-exponential reconstruction model. The Day of the Year (DOY) is
-#' calculated automatically from the date column.
+#' using a sine-exponential reconstruction model. Returns a clean time-series
+#' data frame with combined datetime.
 #'
 #' @param data A data frame containing the daily weather records.
 #' @param date_col Unquoted name of the column containing the Date object.
@@ -77,14 +77,13 @@ estimate_hourly_temp <- function(t_min, t_max, t_min_next, lat, doy,
 #' @param lat_col Unquoted name of the column containing the latitude (decimal degrees).
 #'
 #' @return A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
-#' with two new columns: \code{hour} (0 to 23) and \code{temperature_hourly} (°C). Original input
-#' columns are preserved.
+#' with two columns: \code{datetime} (POSIXct) and \code{temperature_hourly} (°C).
 #' @export
 #'
 #' @examples
 #' library(dplyr)
 #'
-#' # Sample daily dataset matching your exact input structure
+#' # Sample daily dataset representing 5 continuous days
 #' daily_series <- tibble::tibble(
 #'   date = as.Date("2026-06-01") + 0:4,
 #'   lat = rep(-27.3, 5),
@@ -116,7 +115,6 @@ daily_to_hourly_temp <- function(data, date_col, t_min_col, t_max_col, lat_col) 
     dplyr::mutate(temperature_hourly = purrr::pmap(
       list(!!t_min_sym, !!t_max_sym, .data$t_min_next_temp_internal, !!lat_sym, .data$doy_internal),
       function(t_min, t_max, t_min_next, lat, doy) {
-        # FIX: Replaced vctrs::field with pure NA_real_ padding to avoid corrupt rcrd errors
         if (is.na(t_min) || is.na(t_max) || is.na(lat) || is.na(doy)) {
           return(rep(NA_real_, 24))
         }
@@ -126,7 +124,15 @@ daily_to_hourly_temp <- function(data, date_col, t_min_col, t_max_col, lat_col) 
     dplyr::select(-"t_min_next_temp_internal", -"doy_internal") |>
     dplyr::mutate(hour = purrr::map(.data$temperature_hourly, ~ 0:23)) |>
     tidyr::unnest(cols = c("temperature_hourly", "hour")) |>
-    dplyr::relocate("hour", "temperature_hourly", .after = !!lat_sym)
+    # Unify date and hour into a single POSIXct datetime column
+    dplyr::mutate(
+      datetime = as.POSIXct(
+        paste0(format(!!date_sym, "%Y-%m-%d"), " ", sprintf("%02d:00:00", .data$hour)),
+        tz = "UTC"
+      )
+    ) |>
+    # Drop all inputs and original columns, retaining only the requested fields
+    dplyr::select("datetime", "temperature_hourly")
 
   return(expanded_data)
 }

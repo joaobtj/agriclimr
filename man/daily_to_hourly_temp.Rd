@@ -19,19 +19,18 @@ daily_to_hourly_temp(data, date_col, t_min_col, t_max_col, lat_col)
 }
 \value{
 A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
-with two new columns: \code{hour} (0 to 23) and \code{temperature_hourly} (°C). Original input
-columns are preserved.
+with two columns: \code{datetime} (POSIXct) and \code{temperature_hourly} (°C).
 }
 \description{
 Takes a data frame containing daily records (minimum and maximum
 temperatures) and expands it into an hourly data frame (24 rows per day)
-using a sine-exponential reconstruction model. The Day of the Year (DOY) is
-calculated automatically from the date column.
+using a sine-exponential reconstruction model. Returns a clean time-series
+data frame with combined datetime.
 }
 \examples{
 library(dplyr)
 
-# Sample daily dataset matching your exact input structure
+# Sample daily dataset representing 5 continuous days
 daily_series <- tibble::tibble(
   date = as.Date("2026-06-01") + 0:4,
   lat = rep(-27.3, 5),
