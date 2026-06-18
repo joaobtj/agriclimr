@@ -1,0 +1,39 @@
+url: https://joaobtj.github.io/agriclimr/
+lang: pt
+
+template:
+  bootstrap: 5
+  bootswatch: flatly # Um tema limpo, ideal para pacotes científicos
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [github]
+  components:
+    articles:
+      text: Documentação & Metodologia
+      menu:
+        - text: "Modelagem do Molhamento Foliar (PT)"
+          href: articles/vignette_molhamento_pt.html
+        - text: "Leaf Wetness Duration Modeling (EN)"
+          href: articles/vignette_leaf_wetness_en.html
+
+reference:
+  - title: "Desagregação de Temperatura"
+    desc: "Funções para estimar e converter temperaturas diárias em perfis horários."
+    contents:
+      - estimate_hourly_temp
+      - daily_to_hourly_temp
+
+  - title: "Estimativa de Humidade Relativa"
+    desc: "Funções baseadas na pressão de vapor para reconstrução horária da humidade."
+    contents:
+      - estimate_hourly_rh
+      - daily_to_hourly_rh
+
+  - title: "Duração do Molhamento Foliar (DMF)"
+    desc: "Algoritmos para determinação do molhamento foliar a partir de limiares de humidade."
+    contents:
+      - estimate_lwd_rh
+      - daily_to_hourly_lwd
+
