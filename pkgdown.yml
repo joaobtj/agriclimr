@@ -1,0 +1,10 @@
+pandoc: 3.8.3
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles:
+  vignette_leaf_wetness_en: vignette_leaf_wetness_en.html
+  vignette_molhamento_pt: vignette_molhamento_pt.html
+last_built: 2026-06-18T02:40Z
+urls:
+  reference: https://joaobtj.github.io/agriclimr/reference
+  article: https://joaobtj.github.io/agriclimr/articles
