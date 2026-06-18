@@ -1,0 +1,45 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# agriclimr
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The agriclimr package is designed for agrometeorological calculations and agricultural climate analysis.
+
+## Installation
+
+You can install the development version of agriclimr from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("joaobtj/agriclimr")
+```
+
+Alternatively, you can install it via R-Universe:
+
+```r
+install.packages("agriclimr", repos = c("https://joaobtj.r-universe.dev", "https://cloud.r-project.org"))
+
+```
+
+## Documentation
+
+For comprehensive theoretical guides, mathematical formulations, and detailed function references, please visit the official documentation site:
+
+👉 https://joaobtj.github.io/agriclimr/
+
+Step-by-step tutorials and fully reproducible examples are available under the Articles section in both English and Portuguese.
