@@ -7,7 +7,7 @@ Maintainer: Joao Batista Tolentino Jr. <joao.tolentino@ufsc.br>
 Description: Tools for downloading and processing climate data of agricultural 
     interest.
 License: MIT + file LICENSE
-URL: https://github.com/joaobtj/agriclimr
+URL: https://github.com/joaobtj/agriclimr, https://joaobtj.github.io/agriclimr/
 BugReports: https://github.com/joaobtj/agriclimr/issues
 Depends:
     R (>= 4.1)
@@ -15,13 +15,13 @@ Imports:
     dplyr,
     purrr,
     rlang,
-    readr,
     tidyr
 Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
-    pkgdown
+    pkgdown,
+    tibble
 VignetteBuilder:
     knitr
 Encoding: UTF-8

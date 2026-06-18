@@ -81,7 +81,6 @@ estimate_hourly_temp <- function(t_min, t_max, t_min_next, lat, doy,
 #' @export
 #'
 #' @examples
-#' library(dplyr)
 #'
 #' # Sample daily dataset representing 5 continuous days
 #' daily_series <- tibble::tibble(

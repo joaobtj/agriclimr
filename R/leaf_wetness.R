@@ -41,10 +41,10 @@ estimate_lwd_rh <- function(rh, threshold = 90) {
 #' @param date_col Unquoted name of the column containing the Date object.
 #' @param t_min_col Unquoted name of the column containing the current day's minimum temperature (°C).
 #' @param t_max_col Unquoted name of the column containing the current day's maximum temperature (°C).
-#' @param rh_daily_col Unquoted name of the column containing the daily average relative humidity (\%).
+#' @param rh_daily_col Unquoted name of the column containing the daily average relative humidity (%).
 #' @param lat_col Unquoted name of the column containing the latitude (decimal degrees).
 #' @param rh_threshold A single numeric value indicating the RH percentage above which leaf
-#' wetness is assumed to occur. Default is 85\% based on optimized regional validations.
+#' wetness is assumed to occur. Default is 85% based on optimized regional validations.
 #'
 #' @return A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
 #' with four columns: \code{datetime} (POSIXct), \code{temperature_hourly} (°C), \code{rh_hourly} (\%),
@@ -52,8 +52,6 @@ estimate_lwd_rh <- function(rh, threshold = 90) {
 #' @export
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' # Sample daily dataset matching your exact input structure with 5 continuous days
 #' daily_series <- tibble::tibble(
 #'   date = as.Date("2026-06-01") + 0:4,

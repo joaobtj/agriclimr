@@ -15,13 +15,13 @@ daily_to_hourly_rh(data, date_col, t_min_col, t_max_col, rh_daily_col, lat_col)
 
 \item{t_max_col}{Unquoted name of the column containing the current day's maximum temperature (°C).}
 
-\item{rh_daily_col}{Unquoted name of the column containing the daily average relative humidity (\\%).}
+\item{rh_daily_col}{Unquoted name of the column containing the daily average relative humidity (\%).}
 
 \item{lat_col}{Unquoted name of the column containing the latitude (decimal degrees).}
 }
 \value{
 A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
-with three columns: \code{datetime} (POSIXct), \code{temperature_hourly} (°C), and \code{rh_hourly} (\\%).
+with three columns: \code{datetime} (POSIXct), \code{temperature_hourly} (°C), and \code{rh_hourly} (\%).
 }
 \description{
 Takes a daily data frame containing temperature extrema and average
@@ -30,7 +30,6 @@ to generate a 24-hour profile of relative humidity for each day. Returns a clean
 time-series data frame with combined datetime.
 }
 \examples{
-library(dplyr)
 
 # Sample daily dataset matching your exact input structure with 5 continuous days
 daily_series <- tibble::tibble(

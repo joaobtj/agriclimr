@@ -28,7 +28,6 @@ using a sine-exponential reconstruction model. Returns a clean time-series
 data frame with combined datetime.
 }
 \examples{
-library(dplyr)
 
 # Sample daily dataset representing 5 continuous days
 daily_series <- tibble::tibble(

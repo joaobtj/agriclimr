@@ -23,12 +23,12 @@ daily_to_hourly_lwd(
 
 \item{t_max_col}{Unquoted name of the column containing the current day's maximum temperature (°C).}
 
-\item{rh_daily_col}{Unquoted name of the column containing the daily average relative humidity (\\%).}
+\item{rh_daily_col}{Unquoted name of the column containing the daily average relative humidity (\%).}
 
 \item{lat_col}{Unquoted name of the column containing the latitude (decimal degrees).}
 
 \item{rh_threshold}{A single numeric value indicating the RH percentage above which leaf
-wetness is assumed to occur. Default is 85\\% based on optimized regional validations.}
+wetness is assumed to occur. Default is 85\% based on optimized regional validations.}
 }
 \value{
 A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
@@ -41,8 +41,6 @@ relative humidity, reconstructs the hourly parameters internally, and computes
 the hourly leaf wetness presence along with its daily operational hour sum.
 }
 \examples{
-library(dplyr)
-
 # Sample daily dataset matching your exact input structure with 5 continuous days
 daily_series <- tibble::tibble(
   date = as.Date("2026-06-01") + 0:4,

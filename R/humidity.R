@@ -4,11 +4,11 @@
 #' vector of hourly temperatures. It assumes that the actual vapor pressure
 #' remains constant throughout the day.
 #'
-#' @param rh_daily A single numeric value representing the daily average relative humidity (\%).
+#' @param rh_daily A single numeric value representing the daily average relative humidity (%).
 #' @param t_daily A single numeric value representing the daily average temperature (°C).
 #' @param t_hourly A numeric vector of length 24 containing the hourly temperatures (°C).
 #'
-#' @return A numeric vector of length 24 containing estimated hourly relative humidity values (\%).
+#' @return A numeric vector of length 24 containing estimated hourly relative humidity values (%).
 #' @export
 #'
 #' @examples
@@ -48,19 +48,20 @@ estimate_hourly_rh <- function(rh_daily, t_daily, t_hourly) {
 #' to generate a 24-hour profile of relative humidity for each day. Returns a clean
 #' time-series data frame with combined datetime.
 #'
+#' @importFrom rlang .data
+#'
 #' @param data A data frame containing the daily weather records.
 #' @param date_col Unquoted name of the column containing the Date object.
 #' @param t_min_col Unquoted name of the column containing the current day's minimum temperature (°C).
 #' @param t_max_col Unquoted name of the column containing the current day's maximum temperature (°C).
-#' @param rh_daily_col Unquoted name of the column containing the daily average relative humidity (\%).
+#' @param rh_daily_col Unquoted name of the column containing the daily average relative humidity (%).
 #' @param lat_col Unquoted name of the column containing the latitude (decimal degrees).
 #'
 #' @return A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
-#' with three columns: \code{datetime} (POSIXct), \code{temperature_hourly} (°C), and \code{rh_hourly} (\%).
+#' with three columns: \code{datetime} (POSIXct), \code{temperature_hourly} (°C), and \code{rh_hourly} (%).
 #' @export
 #'
 #' @examples
-#' library(dplyr)
 #'
 #' # Sample daily dataset matching your exact input structure with 5 continuous days
 #' daily_series <- tibble::tibble(

@@ -7,14 +7,14 @@
 estimate_hourly_rh(rh_daily, t_daily, t_hourly)
 }
 \arguments{
-\item{rh_daily}{A single numeric value representing the daily average relative humidity (\\%).}
+\item{rh_daily}{A single numeric value representing the daily average relative humidity (\%).}
 
 \item{t_daily}{A single numeric value representing the daily average temperature (°C).}
 
 \item{t_hourly}{A numeric vector of length 24 containing the hourly temperatures (°C).}
 }
 \value{
-A numeric vector of length 24 containing estimated hourly relative humidity values (\\%).
+A numeric vector of length 24 containing estimated hourly relative humidity values (\%).
 }
 \description{
 Reconstructs a 24-hour profile of hourly relative humidity values
