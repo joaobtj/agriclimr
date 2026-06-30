@@ -8,6 +8,9 @@
 #' @param t_daily A single numeric value representing the daily average temperature (°C).
 #' @param t_hourly A numeric vector of length 24 containing the hourly temperatures (°C).
 #'
+#' @importFrom rlang abort
+#' @importFrom purrr map_dbl
+#'
 #' @return A numeric vector of length 24 containing estimated hourly relative humidity values (%).
 #' @export
 #'
@@ -56,6 +59,11 @@ estimate_hourly_rh <- function(rh_daily, t_daily, t_hourly) {
 #' @param t_max_col Unquoted name of the column containing the current day's maximum temperature (°C).
 #' @param rh_daily_col Unquoted name of the column containing the daily average relative humidity (%).
 #' @param lat_col Unquoted name of the column containing the latitude (decimal degrees).
+#'
+#' @importFrom rlang .data abort ensym
+#' @importFrom dplyr mutate lead coalesce select
+#' @importFrom purrr pmap map
+#' @importFrom tidyr unnest
 #'
 #' @return A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
 #' with three columns: \code{datetime} (POSIXct), \code{temperature_hourly} (°C), and \code{rh_hourly} (%).

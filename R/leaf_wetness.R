@@ -7,6 +7,8 @@
 #' @param threshold A numeric value indicating the RH percentage above which
 #' leaf wetness is assumed to occur. Default is 90%.
 #'
+#' @importFrom rlang abort warn
+#'
 #' @return A numeric vector of the same length as \code{rh} containing binary
 #' values: 1 (wet) or 0 (dry).
 #' @export
@@ -45,6 +47,11 @@ estimate_lwd_rh <- function(rh, threshold = 90) {
 #' @param lat_col Unquoted name of the column containing the latitude (decimal degrees).
 #' @param rh_threshold A single numeric value indicating the RH percentage above which leaf
 #' wetness is assumed to occur. Default is 85% based on optimized regional validations.
+#'
+#' @importFrom rlang .data abort ensym
+#' @importFrom dplyr mutate lead coalesce select group_by ungroup
+#' @importFrom purrr pmap map
+#' @importFrom tidyr unnest
 #'
 #' @return A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
 #' with four columns: \code{datetime} (POSIXct), \code{temperature_hourly} (°C), \code{rh_hourly} (\%),

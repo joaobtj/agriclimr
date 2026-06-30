@@ -12,6 +12,9 @@
 #' @param beta Parameters for the time lag between minimum temperature and sunrise (hours). Default is 1.40.
 #' @param gamma Parameter representing the temperature characteristics decay rate at night. Default is 2.75.
 #'
+#' @importFrom purrr map_dbl
+#' @importFrom rlang abort
+#'
 #' @return A numeric vector of length 24 containing the reconstructed hourly temperatures (°C) from 00:00 to 23:00.
 #' @export
 #'
@@ -75,6 +78,11 @@ estimate_hourly_temp <- function(t_min, t_max, t_min_next, lat, doy,
 #' @param t_min_col Unquoted name of the column containing the current day's minimum temperature (°C).
 #' @param t_max_col Unquoted name of the column containing the current day's maximum temperature (°C).
 #' @param lat_col Unquoted name of the column containing the latitude (decimal degrees).
+#'
+#' @importFrom rlang abort ensym .data
+#' @importFrom dplyr mutate lead coalesce select
+#' @importFrom purrr pmap map
+#' @importFrom tidyr unnest
 #'
 #' @return A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
 #' with two columns: \code{datetime} (POSIXct) and \code{temperature_hourly} (°C).
