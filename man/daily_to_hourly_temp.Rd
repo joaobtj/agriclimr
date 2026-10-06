@@ -4,7 +4,15 @@
 \alias{daily_to_hourly_temp}
 \title{Expand Daily Temperature Data Frame to Hourly Scale}
 \usage{
-daily_to_hourly_temp(data, date_col, t_min_col, t_max_col, lat_col)
+daily_to_hourly_temp(
+  data,
+  date_col,
+  t_min_col,
+  t_max_col,
+  lat_col,
+  lon_col = NULL,
+  tz = NULL
+)
 }
 \arguments{
 \item{data}{A data frame containing the daily weather records.}
@@ -16,6 +24,10 @@ daily_to_hourly_temp(data, date_col, t_min_col, t_max_col, lat_col)
 \item{t_max_col}{Unquoted name of the column containing the current day's maximum temperature (°C).}
 
 \item{lat_col}{Unquoted name of the column containing the latitude (decimal degrees).}
+
+\item{lon_col}{Optional unquoted name of the column containing the longitude (decimal degrees). Default is \code{NULL}.}
+
+\item{tz}{Optional numeric value indicating the time zone offset from UTC in hours (e.g., -3). Default is \code{NULL}.}
 }
 \value{
 A tibble (data frame) expanded to hourly resolution (24 rows per original daily row)
@@ -28,14 +40,21 @@ using a sine-exponential reconstruction model. Returns a clean time-series
 data frame with combined datetime.
 }
 \examples{
-
 # Sample daily dataset representing 5 continuous days
 daily_series <- tibble::tibble(
   date = as.Date("2026-06-01") + 0:4,
   lat = rep(-27.3, 5),
+  lon = rep(-50.6, 5),
   tmin = c(12.0, 13.5, 11.0, 10.5, 14.0),
   tmax = c(22.0, 24.5, 21.0, 19.5, 23.0)
 )
 
+# Standard usage (solar time)
 daily_to_hourly_temp(daily_series, date, tmin, tmax, lat)
+
+# With longitude, time zone, and custom alpha parameter via ...
+daily_to_hourly_temp(
+  daily_series, date, tmin, tmax, lat,
+  lon_col = lon, tz = -3
+)
 }
