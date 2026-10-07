@@ -10,6 +10,8 @@ estimate_hourly_temp(
   t_min_next,
   lat,
   doy,
+  lon = NULL,
+  tz = NULL,
   alpha = 2.75,
   beta = 1.4,
   gamma = 2.75
@@ -26,6 +28,12 @@ estimate_hourly_temp(
 
 \item{doy}{Day of the year (Julian day, 1 to 365/366).}
 
+\item{lon}{Optional. Longitude of the location in decimal degrees (negative for West).
+Default is \code{NULL} (assumes local solar time where noon is 12:00).}
+
+\item{tz}{Optional. Time zone offset from UTC in hours (e.g., -3 for UTC-3).
+Default is \code{NULL}.}
+
 \item{alpha}{Parameters for the time lag between solar noon and maximum
 temperature (hours). Default is 2.75.}
 
@@ -41,5 +49,12 @@ Reconstructs a 24-hour hourly temperature profile from daily minimum,
 maximum, and the next day's minimum temperatures using a sine-exponential model.
 }
 \examples{
+# Using default local solar time
 estimate_hourly_temp(t_min = 12, t_max = 25, t_min_next = 13, lat = -27.28, doy = 150)
+
+# Accounting for civil time with longitude and time zone offset
+estimate_hourly_temp(
+  t_min = 12, t_max = 25, t_min_next = 13,
+  lat = -27.28, doy = 150, lon = -50.58, tz = -3
+)
 }

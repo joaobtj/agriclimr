@@ -17,22 +17,32 @@ navbar:
           href: articles/vignette_molhamento_pt.html
         - text: "Leaf Wetness Duration Modeling (EN)"
           href: articles/vignette_leaf_wetness_en.html
+        - text: "Geometria Solar e Fotoperíodo com agriclimr"
+          href: articles/vignette_solar_pt.html
 
 reference:
-  - title: "Desagregação de Temperatura"
-    desc: "Funções para estimar e converter temperaturas diárias em perfis horários."
+  - title: "Solar Geometry"
+    desc: "Astronomical solar position and day length calculations."
+    contents:
+      - estimate_solar_noon
+      - estimate_sunrise
+      - estimate_sunset
+      - estimate_daylength
+
+  - title: "Temperature"
+    desc: "Hourly temperature estimation and conversion."
     contents:
       - estimate_hourly_temp
       - daily_to_hourly_temp
 
-  - title: "Estimativa de Humidade Relativa"
-    desc: "Funções baseadas na pressão de vapor para reconstrução horária da humidade."
+  - title: "Relative Humidity"
+    desc: "Hourly relative humidity estimation and conversion."
     contents:
       - estimate_hourly_rh
       - daily_to_hourly_rh
 
-  - title: "Duração do Molhamento Foliar (DMF)"
-    desc: "Algoritmos para determinação do molhamento foliar a partir de limiares de humidade."
+  - title: "Leaf Wetness Duration"
+    desc: "Leaf wetness duration modeling."
     contents:
       - estimate_lwd_rh
       - daily_to_hourly_lwd

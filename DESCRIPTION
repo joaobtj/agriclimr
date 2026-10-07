@@ -21,7 +21,8 @@ Suggests:
     knitr,
     rmarkdown,
     pkgdown,
-    tibble
+    tibble,
+    ggplot2
 VignetteBuilder:
     knitr
 Encoding: UTF-8
