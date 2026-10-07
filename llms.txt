@@ -34,30 +34,40 @@ under the Articles section in both English and Portuguese.
 
 # Package index
 
-## Desagregação de Temperatura
+## Solar Geometry
 
-Funções para estimar e converter temperaturas diárias em perfis
-horários.
+Astronomical solar position and day length calculations.
+
+- [`estimate_solar_noon()`](https://joaobtj.github.io/agriclimr/reference/estimate_solar_noon.md)
+  : Estimate Solar Noon
+- [`estimate_sunrise()`](https://joaobtj.github.io/agriclimr/reference/estimate_sunrise.md)
+  : Estimate Sunrise Time
+- [`estimate_sunset()`](https://joaobtj.github.io/agriclimr/reference/estimate_sunset.md)
+  : Estimate Sunset Time
+- [`estimate_daylength()`](https://joaobtj.github.io/agriclimr/reference/estimate_daylength.md)
+  : Estimate Astronomical Day Length (Photoperiod)
+
+## Temperature
+
+Hourly temperature estimation and conversion.
 
 - [`estimate_hourly_temp()`](https://joaobtj.github.io/agriclimr/reference/estimate_hourly_temp.md)
   : Reconstruct Hourly Temperatures from Daily Extrema
 - [`daily_to_hourly_temp()`](https://joaobtj.github.io/agriclimr/reference/daily_to_hourly_temp.md)
   : Expand Daily Temperature Data Frame to Hourly Scale
 
-## Estimativa de Humidade Relativa
+## Relative Humidity
 
-Funções baseadas na pressão de vapor para reconstrução horária da
-humidade.
+Hourly relative humidity estimation and conversion.
 
 - [`estimate_hourly_rh()`](https://joaobtj.github.io/agriclimr/reference/estimate_hourly_rh.md)
   : Estimate Hourly Relative Humidity from Daily Metrics
 - [`daily_to_hourly_rh()`](https://joaobtj.github.io/agriclimr/reference/daily_to_hourly_rh.md)
   : Disaggregate Daily Weather Data to Hourly Relative Humidity
 
-## Duração do Molhamento Foliar (DMF)
+## Leaf Wetness Duration
 
-Algoritmos para determinação do molhamento foliar a partir de limiares
-de humidade.
+Leaf wetness duration modeling.
 
 - [`estimate_lwd_rh()`](https://joaobtj.github.io/agriclimr/reference/estimate_lwd_rh.md)
   : Estimate Leaf Wetness Duration (LWD)
@@ -72,3 +82,5 @@ de humidade.
   Data](https://joaobtj.github.io/agriclimr/articles/vignette_leaf_wetness_en.md):
 - [Modelagem do Molhamento Foliar a partir de Dados
   Diários](https://joaobtj.github.io/agriclimr/articles/vignette_molhamento_pt.md):
+- [Geometria Solar e Fotoperíodo com
+  agriclimr](https://joaobtj.github.io/agriclimr/articles/vignette_solar_pt.md):

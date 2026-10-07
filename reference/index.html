@@ -20,6 +20,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-documenta-o-metodologia" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Documentação &amp; Metodologia</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-documenta-o-metodologia"><li><a class="dropdown-item" href="../articles/vignette_molhamento_pt.html">Modelagem do Molhamento Foliar (PT)</a></li>
     <li><a class="dropdown-item" href="../articles/vignette_leaf_wetness_en.html">Leaf Wetness Duration Modeling (EN)</a></li>
+    <li><a class="dropdown-item" href="../articles/vignette_solar_pt.html">Geometria Solar e Fotoperíodo com agriclimr</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/joaobtj/agriclimr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
@@ -34,9 +35,46 @@
     </div>
 
     <div class="section level2">
-      <h2 id="desagrega-o-de-temperatura">Desagregação de Temperatura<a class="anchor" aria-label="anchor" href="#desagrega-o-de-temperatura"></a></h2>
+      <h2 id="solar-geometry">Solar Geometry<a class="anchor" aria-label="anchor" href="#solar-geometry"></a></h2>
 
-      <div class="section-desc"><p>Funções para estimar e converter temperaturas diárias em perfis horários.</p></div>
+      <div class="section-desc"><p>Astronomical solar position and day length calculations.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="estimate_solar_noon.html">estimate_solar_noon()</a></code>
+
+        </dt>
+        <dd>Estimate Solar Noon</dd>
+
+        <dt>
+
+          <code><a href="estimate_sunrise.html">estimate_sunrise()</a></code>
+
+        </dt>
+        <dd>Estimate Sunrise Time</dd>
+
+        <dt>
+
+          <code><a href="estimate_sunset.html">estimate_sunset()</a></code>
+
+        </dt>
+        <dd>Estimate Sunset Time</dd>
+
+        <dt>
+
+          <code><a href="estimate_daylength.html">estimate_daylength()</a></code>
+
+        </dt>
+        <dd>Estimate Astronomical Day Length (Photoperiod)</dd>
+      </dl></div><div class="section level2">
+      <h2 id="temperature">Temperature<a class="anchor" aria-label="anchor" href="#temperature"></a></h2>
+
+      <div class="section-desc"><p>Hourly temperature estimation and conversion.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -57,9 +95,9 @@
         </dt>
         <dd>Expand Daily Temperature Data Frame to Hourly Scale</dd>
       </dl></div><div class="section level2">
-      <h2 id="estimativa-de-humidade-relativa">Estimativa de Humidade Relativa<a class="anchor" aria-label="anchor" href="#estimativa-de-humidade-relativa"></a></h2>
+      <h2 id="relative-humidity">Relative Humidity<a class="anchor" aria-label="anchor" href="#relative-humidity"></a></h2>
 
-      <div class="section-desc"><p>Funções baseadas na pressão de vapor para reconstrução horária da humidade.</p></div>
+      <div class="section-desc"><p>Hourly relative humidity estimation and conversion.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -80,9 +118,9 @@
         </dt>
         <dd>Disaggregate Daily Weather Data to Hourly Relative Humidity</dd>
       </dl></div><div class="section level2">
-      <h2 id="dura-o-do-molhamento-foliar-dmf-">Duração do Molhamento Foliar (DMF)<a class="anchor" aria-label="anchor" href="#dura-o-do-molhamento-foliar-dmf-"></a></h2>
+      <h2 id="leaf-wetness-duration">Leaf Wetness Duration<a class="anchor" aria-label="anchor" href="#leaf-wetness-duration"></a></h2>
 
-      <div class="section-desc"><p>Algoritmos para determinação do molhamento foliar a partir de limiares de humidade.</p></div>
+      <div class="section-desc"><p>Leaf wetness duration modeling.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -112,7 +150,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

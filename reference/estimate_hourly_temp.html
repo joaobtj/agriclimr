@@ -22,6 +22,7 @@ maximum, and the next day's minimum temperatures using a sine-exponential model.
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-documenta-o-metodologia" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Documentação &amp; Metodologia</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-documenta-o-metodologia"><li><a class="dropdown-item" href="../articles/vignette_molhamento_pt.html">Modelagem do Molhamento Foliar (PT)</a></li>
     <li><a class="dropdown-item" href="../articles/vignette_leaf_wetness_en.html">Leaf Wetness Duration Modeling (EN)</a></li>
+    <li><a class="dropdown-item" href="../articles/vignette_solar_pt.html">Geometria Solar e Fotoperíodo com agriclimr</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/joaobtj/agriclimr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
@@ -50,6 +51,8 @@ maximum, and the next day's minimum temperatures using a sine-exponential model.
 <span>  <span class="va">t_min_next</span>,</span>
 <span>  <span class="va">lat</span>,</span>
 <span>  <span class="va">doy</span>,</span>
+<span>  lon <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tz <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">2.75</span>,</span>
 <span>  beta <span class="op">=</span> <span class="fl">1.4</span>,</span>
 <span>  gamma <span class="op">=</span> <span class="fl">2.75</span></span>
@@ -80,6 +83,16 @@ maximum, and the next day's minimum temperatures using a sine-exponential model.
 <dd><p>Day of the year (Julian day, 1 to 365/366).</p></dd>
 
 
+<dt id="arg-lon">lon<a class="anchor" aria-label="anchor" href="#arg-lon"></a></dt>
+<dd><p>Optional. Longitude of the location in decimal degrees (negative for West).
+Default is <code>NULL</code> (assumes local solar time where noon is 12:00).</p></dd>
+
+
+<dt id="arg-tz">tz<a class="anchor" aria-label="anchor" href="#arg-tz"></a></dt>
+<dd><p>Optional. Time zone offset from UTC in hours (e.g., -3 for UTC-3).
+Default is <code>NULL</code>.</p></dd>
+
+
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
 <dd><p>Parameters for the time lag between solar noon and maximum
 temperature (hours). Default is 2.75.</p></dd>
@@ -100,10 +113,20 @@ temperature (hours). Default is 2.75.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">estimate_hourly_temp</span><span class="op">(</span>t_min <span class="op">=</span> <span class="fl">12</span>, t_max <span class="op">=</span> <span class="fl">25</span>, t_min_next <span class="op">=</span> <span class="fl">13</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">27.28</span>, doy <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Using default local solar time</span></span></span>
+<span class="r-in"><span><span class="fu">estimate_hourly_temp</span><span class="op">(</span>t_min <span class="op">=</span> <span class="fl">12</span>, t_max <span class="op">=</span> <span class="fl">25</span>, t_min_next <span class="op">=</span> <span class="fl">13</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">27.28</span>, doy <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 15.48837 14.90350 14.41670 14.01151 13.67425 13.39355 13.15990 12.96543</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 12.80356 13.39885 15.10689 16.75962 18.32764 19.78303 21.09988 22.25476</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] 23.22710 23.99961 22.62654 21.01254 19.66914 18.55098 17.62029 16.84564</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Accounting for civil time with longitude and time zone offset</span></span></span>
+<span class="r-in"><span><span class="fu">estimate_hourly_temp</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  t_min <span class="op">=</span> <span class="fl">12</span>, t_max <span class="op">=</span> <span class="fl">25</span>, t_min_next <span class="op">=</span> <span class="fl">13</span>,</span></span>
+<span class="r-in"><span>  lat <span class="op">=</span> <span class="op">-</span><span class="fl">27.28</span>, doy <span class="op">=</span> <span class="fl">150</span>, lon <span class="op">=</span> <span class="op">-</span><span class="fl">50.58</span>, tz <span class="op">=</span> <span class="op">-</span><span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 15.70483 15.08367 14.56665 14.13632 13.77814 13.48002 13.23187 13.02533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 12.85343 12.83161 14.55120 16.22538 17.82435 19.31965 20.68466 21.89508</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] 22.92938 23.76914 23.22388 21.50972 20.08297 18.89542 17.90698 17.08427</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -115,7 +138,7 @@ temperature (hours). Default is 2.75.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

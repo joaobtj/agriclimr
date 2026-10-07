@@ -8,7 +8,15 @@ time-series data frame with combined datetime.
 ## Usage
 
 ``` r
-daily_to_hourly_temp(data, date_col, t_min_col, t_max_col, lat_col)
+daily_to_hourly_temp(
+  data,
+  date_col,
+  t_min_col,
+  t_max_col,
+  lat_col,
+  lon_col = NULL,
+  tz = NULL
+)
 ```
 
 ## Arguments
@@ -35,6 +43,16 @@ daily_to_hourly_temp(data, date_col, t_min_col, t_max_col, lat_col)
 
   Unquoted name of the column containing the latitude (decimal degrees).
 
+- lon_col:
+
+  Optional unquoted name of the column containing the longitude (decimal
+  degrees). Default is `NULL`.
+
+- tz:
+
+  Optional numeric value indicating the time zone offset from UTC in
+  hours (e.g., -3). Default is `NULL`.
+
 ## Value
 
 A tibble (data frame) expanded to hourly resolution (24 rows per
@@ -44,15 +62,16 @@ original daily row) with two columns: `datetime` (POSIXct) and
 ## Examples
 
 ``` r
-
 # Sample daily dataset representing 5 continuous days
 daily_series <- tibble::tibble(
   date = as.Date("2026-06-01") + 0:4,
   lat = rep(-27.3, 5),
+  lon = rep(-50.6, 5),
   tmin = c(12.0, 13.5, 11.0, 10.5, 14.0),
   tmax = c(22.0, 24.5, 21.0, 19.5, 23.0)
 )
 
+# Standard usage (solar time)
 daily_to_hourly_temp(daily_series, date, tmin, tmax, lat)
 #> # A tibble: 120 × 2
 #>    datetime            temperature_hourly
@@ -67,5 +86,25 @@ daily_to_hourly_temp(daily_series, date, tmin, tmax, lat)
 #>  8 2026-06-01 07:00:00               12.7
 #>  9 2026-06-01 08:00:00               12.6
 #> 10 2026-06-01 09:00:00               13.1
+#> # ℹ 110 more rows
+
+# With longitude, time zone, and custom alpha parameter via ...
+daily_to_hourly_temp(
+  daily_series, date, tmin, tmax, lat,
+  lon_col = lon, tz = -3
+)
+#> # A tibble: 120 × 2
+#>    datetime            temperature_hourly
+#>    <dttm>                           <dbl>
+#>  1 2026-06-01 00:00:00               14.9
+#>  2 2026-06-01 01:00:00               14.4
+#>  3 2026-06-01 02:00:00               14.0
+#>  4 2026-06-01 03:00:00               13.6
+#>  5 2026-06-01 04:00:00               13.4
+#>  6 2026-06-01 05:00:00               13.1
+#>  7 2026-06-01 06:00:00               12.9
+#>  8 2026-06-01 07:00:00               12.8
+#>  9 2026-06-01 08:00:00               12.7
+#> 10 2026-06-01 09:00:00               12.6
 #> # ℹ 110 more rows
 ```
