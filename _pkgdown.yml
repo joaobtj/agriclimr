@@ -21,6 +21,10 @@ navbar:
           href: articles/vignette_solar_pt.html
 
 reference:
+  - title: "Data Retrieval"
+    desc: "Functions to download and retrieve weather data."
+    contents:
+      - get_inmet_station
   - title: "Solar Geometry"
     desc: "Astronomical solar position and day length calculations."
     contents:
