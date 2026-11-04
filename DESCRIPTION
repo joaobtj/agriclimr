@@ -12,16 +12,19 @@ BugReports: https://github.com/joaobtj/agriclimr/issues
 Depends:
     R (>= 4.1)
 Imports:
+    data.table,
     dplyr,
+    lubridate,
     purrr,
     rlang,
-    tidyr
+    tibble,
+    tidyr,
+    tidyselect
 Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
     pkgdown,
-    tibble,
     ggplot2
 VignetteBuilder:
     knitr
