@@ -13,15 +13,16 @@ Depends:
     R (>= 4.1)
 Imports:
     dplyr,
+    ncdf4,
     purrr,
     rlang,
+    tibble,
     tidyr
 Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
     pkgdown,
-    tibble,
     ggplot2
 VignetteBuilder:
     knitr
