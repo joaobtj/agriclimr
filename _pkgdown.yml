@@ -13,6 +13,8 @@ navbar:
     articles:
       text: Documentação & Metodologia
       menu:
+        - text: "Obtendo e Processando Dados Meteorológicos do INMET"
+          href: articles/vignette_inmet_pt.html
         - text: "Modelagem do Molhamento Foliar (PT)"
           href: articles/vignette_molhamento_pt.html
         - text: "Leaf Wetness Duration Modeling (EN)"
