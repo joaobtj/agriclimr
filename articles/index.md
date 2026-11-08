@@ -2,6 +2,8 @@
 
 ### All vignettes
 
+- [Obtendo e Processando Dados Meteorológicos do
+  INMET](https://joaobtj.github.io/agriclimr/articles/vignette_inmet_pt.md):
 - [Leaf Wetness Duration Modeling from Daily
   Data](https://joaobtj.github.io/agriclimr/articles/vignette_leaf_wetness_en.md):
 - [Modelagem do Molhamento Foliar a partir de Dados

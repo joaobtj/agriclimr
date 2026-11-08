@@ -38,6 +38,8 @@ under the Articles section in both English and Portuguese.
 
 Functions to download and retrieve weather data.
 
+- [`get_inmet_station()`](https://joaobtj.github.io/agriclimr/reference/get_inmet_station.md)
+  : Download and Process INMET Weather Station Data
 - [`get_brdwgd()`](https://joaobtj.github.io/agriclimr/reference/get_brdwgd.md)
   : Extract Point Data from BR-DWGD NetCDF Files
 
@@ -85,6 +87,8 @@ Leaf wetness duration modeling.
 
 ### All vignettes
 
+- [Obtendo e Processando Dados Meteorológicos do
+  INMET](https://joaobtj.github.io/agriclimr/articles/vignette_inmet_pt.md):
 - [Leaf Wetness Duration Modeling from Daily
   Data](https://joaobtj.github.io/agriclimr/articles/vignette_leaf_wetness_en.md):
 - [Modelagem do Molhamento Foliar a partir de Dados

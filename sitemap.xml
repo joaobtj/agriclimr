@@ -3,6 +3,7 @@
 <url><loc>https://joaobtj.github.io/agriclimr/LICENSE-text.html</loc></url>
 <url><loc>https://joaobtj.github.io/agriclimr/LICENSE.html</loc></url>
 <url><loc>https://joaobtj.github.io/agriclimr/articles/index.html</loc></url>
+<url><loc>https://joaobtj.github.io/agriclimr/articles/vignette_inmet_pt.html</loc></url>
 <url><loc>https://joaobtj.github.io/agriclimr/articles/vignette_leaf_wetness_en.html</loc></url>
 <url><loc>https://joaobtj.github.io/agriclimr/articles/vignette_molhamento_pt.html</loc></url>
 <url><loc>https://joaobtj.github.io/agriclimr/articles/vignette_solar_pt.html</loc></url>
@@ -19,6 +20,7 @@
 <url><loc>https://joaobtj.github.io/agriclimr/reference/estimate_sunrise.html</loc></url>
 <url><loc>https://joaobtj.github.io/agriclimr/reference/estimate_sunset.html</loc></url>
 <url><loc>https://joaobtj.github.io/agriclimr/reference/get_brdwgd.html</loc></url>
+<url><loc>https://joaobtj.github.io/agriclimr/reference/get_inmet_station.html</loc></url>
 <url><loc>https://joaobtj.github.io/agriclimr/reference/index.html</loc></url>
 </urlset>
 

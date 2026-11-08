@@ -4,6 +4,8 @@
 
 Functions to download and retrieve weather data.
 
+- [`get_inmet_station()`](https://joaobtj.github.io/agriclimr/reference/get_inmet_station.md)
+  : Download and Process INMET Weather Station Data
 - [`get_brdwgd()`](https://joaobtj.github.io/agriclimr/reference/get_brdwgd.md)
   : Extract Point Data from BR-DWGD NetCDF Files
 
