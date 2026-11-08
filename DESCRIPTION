@@ -18,7 +18,7 @@ Imports:
     purrr,
     rlang,
     tibble,
-    tidyselect
+    tidyselect,
     ncdf4,
     tidyr
 Suggests:
