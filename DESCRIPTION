@@ -12,11 +12,14 @@ BugReports: https://github.com/joaobtj/agriclimr/issues
 Depends:
     R (>= 4.1)
 Imports:
+    data.table,
     dplyr,
-    ncdf4,
+    lubridate,
     purrr,
     rlang,
     tibble,
+    tidyselect,
+    ncdf4,
     tidyr
 Suggests:
     testthat (>= 3.0.0),

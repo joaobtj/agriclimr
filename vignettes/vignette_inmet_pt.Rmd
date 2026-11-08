@@ -1,0 +1,135 @@
+---
+title: "Obtendo e Processando Dados Meteorológicos do INMET"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Obtendo e Processando Dados Meteorológicos do INMET}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+## Introdução
+
+O Instituto Nacional de Meteorologia (**INMET**) é o órgão federal responsável pelas observações meteorológicas oficiais no Brasil. Desde o início dos anos 2000, o instituto opera uma rede densa de **Estações Meteorológicas Automáticas (EMA)**, que registram variáveis horárias como precipitação, temperatura do ar, umidade relativa, pressão atmosférica, radiação solar global e velocidade do vento.
+
+O pacote `agriclimr` disponibiliza a função `get_inmet_station()` para automatizar todo o pipeline de recuperação desses dados:
+1. Download direto dos pacotes anuais compactados (`.zip`) do portal oficial de dados históricos do INMET.
+2. Armazenamento em cache local para evitar downloads repetidos da mesma base anual.
+3. Extração pontual apenas dos arquivos correspondentes à estação desejada.
+4. Limpeza e padronização dos dados (formatação de datas, tratamento do valor sentinela `-9999` e imputação física para radiação solar noturna).
+
+---
+
+## Origem e Estrutura dos Dados
+
+### O Portal de Dados Históricos do INMET
+
+O INMET disponibiliza publicamente seus registros históricos em pacotes anuais compactados no seguinte padrão de URL:
+
+
+```text
+[https://portal.inmet.gov.br/uploads/dadoshistoricos/](https://portal.inmet.gov.br/uploads/dadoshistoricos/){ano}.zip
+
+```
+
+Cada arquivo anual `.zip` contém centenas de arquivos `.CSV`, onde cada arquivo representa uma estação automática ativa durante aquele ano civil.
+
+### Cabeçalho e Estrutura dos Arquivos Brutos
+
+Os arquivos brutos do INMET possuem metadados nas primeiras 8 linhas (nome da estação, código WMO, coordenadas geográficas e altitude) e iniciam os registros tabulares a partir da 9ª linha. 
+
+Além disso, o INMET utiliza o valor numérico `-9999` para sinalizar observações ausentes ou falhas instrumentais.
+
+---
+
+## Como Utilizar `get_inmet_station()`
+
+Carregue os pacotes necessários:
+
+```{r}
+library(agriclimr)
+library(dplyr)
+```
+
+### 1. Baixar Dados de uma Estação Específica
+
+Para extrair dados de uma estação automática (por exemplo, a estação `A001` de Brasília - DF) para os anos de 2021 e 2022:
+
+```{r}
+# Download e processamento das observações horárias
+dados_brasilia <- get_inmet_station(
+  station_code = "A001",
+  years = 2021:2022,
+  cache_dir = "meu_diretorio_inmet" # opcional; se NULL, usa tempdir()
+)
+
+head(dados_brasilia)
+```
+
+O retorno padrão (`full_columns = FALSE`) é um `tibble` contendo a data/hora combinada (`datetime` em formato `POSIXct`) e as variáveis meteorológicas essenciais consolidadas:
+
+* `datetime`: Data e hora da medição (UTC).
+* `precip`: Precipitação pluviométrica acumulada na hora (mm).
+* `temp`: Temperatura instantânea do ar (°C).
+* `rh`: Umidade relativa do ar (%).
+* `dew_point`: Temperatura do ponto de orvalho (°C).
+* `press`: Pressão atmosférica na altitude da estação (mB / hPa).
+* `solar_rad`: Radiação solar global ($kJ/m^2$).
+* `wind_speed`: Velocidade do vento a 10 m ($m/s$).
+
+---
+
+### 2. Retornar Todas as Colunas (Mínimas e Máximas)
+
+Caso o seu estudo exija amplitude térmica horária, rajadas de vento ou extremos de pressão, ative o parâmetro `full_columns = TRUE`:
+
+```{r}
+dados_completos <- get_inmet_station(
+  station_code = "A001",
+  years = 2022,
+  full_columns = TRUE
+)
+
+glimpse(dados_completos)
+```
+
+Neste modo, são incluídas as colunas `temp_max`, `temp_min`, `rh_max`, `rh_min`, `dew_max`, `dew_min`, `press_max`, `press_min`, `wind_gust` e `wind_dir`.
+
+---
+
+## Tratamentos Realizados pela Função
+
+A função `get_inmet_station()` implementa automaticamente regras de integridade física e computacional:
+
+1. **Tratamento de Dados Ausentes**: Valores originais codificados como `-9999` são convertidos para `NA`.
+2. **Tratamento Físico de Radiação Solar Noturna**: Durante a noite, os sensores de piranômetro do INMET frequentemente registram `-9999` devido a leituras nulas ou ruído de calibração. A função verifica se os demais sensores estavam funcionando normalmente naquele mesmo horário; se sim, o valor é imputado como $0\text{ }kJ/m^2$. Se a maioria dos sensores também falhou, mantém-se `NA` (sinalizando queda de energia ou falha do registrador de dados).
+3. **Conversão Rápida com `data.table::fread`**: A leitura dos múltiplos arquivos anuais é executada em alta performance via `data.table::fread`.
+
+---
+
+## Integração com outras funções do `agriclimr`
+
+Os dados horários obtidos via `get_inmet_station()` podem ser combinados diretamente com os modelos de molhamento foliar do pacote (como `estimate_lwd_rh()`):
+
+```{r}
+# Estimativa de molhamento foliar baseada em limiar de umidade (ex.: RH >= 90%)
+dados_molhamento <- dados_brasilia |>
+  mutate(
+    molhamento = estimate_lwd_rh(rh = rh, threshold = 90)
+  )
+
+head(dados_molhamento)
+```
+
+---
+
+## Referências
+
+* Instituto Nacional de Meteorologia (INMET). Portal de Dados Meteorológicos Históricos. Disponível em: <https://portal.inmet.gov.br/>.
