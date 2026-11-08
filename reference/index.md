@@ -1,5 +1,12 @@
 # Package index
 
+## Data Retrieval
+
+Functions to download and retrieve weather data.
+
+- [`get_brdwgd()`](https://joaobtj.github.io/agriclimr/reference/get_brdwgd.md)
+  : Extract Point Data from BR-DWGD NetCDF Files
+
 ## Solar Geometry
 
 Astronomical solar position and day length calculations.
